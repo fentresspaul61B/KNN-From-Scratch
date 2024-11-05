@@ -55,11 +55,12 @@ def knn_evaluate(distances: pd.DataFrame, k: int) -> pd.DataFrame:
     eval_data = []
     for i, row in enumerate(distances.iterrows()):
         distance_data = []
-        for j, value in enumerate(row[1]):
-            data = {"label": y_train[j], "distance": value}
+        for j, distance in enumerate(row[1]):
+            label = y_train[j]
+            data = {"label": label, "distance": distance}
             distance_data.append(data)
-        sorted_distances = sorted(distance_data, key=lambda d: d['distance'])
-        labels = [data["label"] for data in sorted_distances][:k]
+        sorted_data = sorted(distance_data, key=lambda d: d['distance'])
+        labels = [data["label"] for data in sorted_data][:k]
         prediction = max(set(labels), key=labels.count)
         truth = y_test[i]
         eval_data.append(
