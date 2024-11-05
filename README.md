@@ -19,6 +19,31 @@ For each sample in the test set, Repeat this process until all test samples are 
 
 After all test samples have predictions, evaluate their accuracy using their labels. 
 
+```python
+# KNN from scratch
+
+def knn_evaluate(X_train, y_train, X_test, y_test, k):
+    results = []
+    for test_vector, test_label in zip(X_test, y_test):
+        distance_data = []
+        for train_vector, train_label in zip(X_train, y_train):
+            distance = euclidean_distance(test_vector, train_vector)
+            data = {"label": train_label, "distance": distance}
+            distance_data.append(data)
+        sorted_data = sorted(distance_data, key=lambda d: d['distance'])
+        top_k_labels = [data["label"] for data in sorted_data][:k]
+        prediction = max(set(top_k_labels), key=top_k_labels.count)
+        results.append(
+            {
+                "truth": test_label,
+                "prediction": prediction,
+                "correct": test_label == prediction
+            }
+        )
+    df = pd.DataFrame(results)
+    acc = sum(df["correct"]) / len(df["correct"])
+    return df, acc
+```
 ---
 
 Next: SVM, Decision Trees, Logistic Regression and MLP
