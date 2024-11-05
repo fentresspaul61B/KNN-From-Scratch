@@ -33,7 +33,7 @@ X_test, y_test = X[TRAIN_SIZE:], Y[TRAIN_SIZE:]
 # COMPUTING VECTOR DISTANCES HELPER
 
 
-def euclidean_distance(vector_1, vector_2):
+def euclidean_distance(vector_1: list, vector_2: list) -> float:
     # https://en.wikipedia.org/wiki/Euclidean_distance
     return sum([(v1 - v2)**2 for v1, v2 in zip(vector_1, vector_2)]) ** .5
 
@@ -80,7 +80,7 @@ def knn_evaluate(distances: pd.DataFrame, k: int) -> pd.DataFrame:
 K = 9
 distances = create_distance_matrix(X_train, X_test)
 eval_df, model_from_scratch_acc = knn_evaluate(distances, K)
-print("KNN Model from scratch acc: ", model_from_scratch_acc)
+print("KNN model from scratch acc: ", model_from_scratch_acc)
 
 # -----------------------------------------------------------------------------
 # SKLEARN EXPERIMENT
@@ -90,7 +90,7 @@ model = KNeighborsClassifier(n_neighbors=K)
 model.fit(X_train, y_train)
 predictions_from_sklearn = model.predict(X_test)
 sklearn_acc = sum(predictions_from_sklearn == y_test) / len(y_test)
-print("KNN Model from sklearn acc: ", sklearn_acc)
+print("KNN model from sklearn acc: ", sklearn_acc)
 
 # -----------------------------------------------------------------------------
 # COMPARING RESULTS
@@ -100,6 +100,6 @@ for A, B in zip(list(predictions_from_sklearn), list(eval_df["prediction"])):
     matches.append(A == B)
 
 if all(matches):
-    print("KNN Model from scratch matches sklearn results ✅")
+    print("KNN model from scratch matches sklearn results ✅")
 else:
-    print("KNN Model from scratch matches does not match sklearn results ⚠️")
+    print("KNN model from scratch matches does not match sklearn results ⚠️")
